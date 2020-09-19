@@ -8,7 +8,7 @@ chai.should();
 chai.use(chaiHttp);
 
 describe('Tasks API',()=>{
-    //Test the GET route
+    //Test the GET routes
     describe('GET /tasks',() => {
         it('It should get all the tasks',(done)=>{
             chai.request(server)
@@ -31,19 +31,36 @@ describe('Tasks API',()=>{
 
         it('It should get just one task',(done)=>{
             chai.request(server)
-                .get('/tasks/5')
+                .get('/tasks/1')
                 .end((err,response)=>{
                     response.should.have.status(200);
                     response.body.should.be.a('object');
-                    //response.body.length.should.be.eq(4);
+                    response.body.should.have.property('id');
+                    response.body.should.have.property('description');
+                    response.body.should.have.property('done');
                     done();
                 });
         });
     });
 
-    //Test the GET by id route
 
     //Test the POST route
+    describe('POST /tasks',() => {
+        it('It should make a post and return it',(done)=>{
+            const newTask = {
+                description:"nueva tarea testing",
+                done:false
+            };
+            chai.request(server)
+                .post('/tasks')
+                .send(newTask)
+                .end((err,response)=>{
+                    response.should.have.status(201);
+                    response.body.should.be.a('array');
+                    done();
+                });
+        });
+    });
 
     //
 })

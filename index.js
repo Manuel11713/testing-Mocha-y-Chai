@@ -2,7 +2,6 @@ const express = require('express');
 
 const app = express();
 app.use(express.json());
-
 let tasks = [
     {
         id:0,
@@ -44,12 +43,16 @@ app.get('/tasks/:id',(req,res)=>{
 });
 
 app.post('/tasks',(req,res)=>{
-    const {newTask} =  req.body;
+    const {description,done} =  req.body;
+    const newTask={
+        description,
+        done
+    }
     newTask.id = tasks.length;
 
     tasks.push(newTask);
 
-    res.json(tasks);
+    res.status(201).json(tasks);
 });
 
 app.listen(5000);
